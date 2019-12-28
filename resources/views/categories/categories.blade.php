@@ -13,31 +13,37 @@
                 <div class="card-header">Categories</div>
 
                     <div class="card-body">
-
-                        <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- TRY TO MAKE COL ACTIONS AT THE END OF THE TABLE --}}
-                                    <?php $i = 1 ?>
-                                    @foreach ($categories as $category)
+                        @if($categories->count() == 0)
+                            <h3 class="text text-center"> No Categories Yet </h3>
+                            @else
+                            <table class="table table-hover">
+                                    <thead>
                                         <tr>
-                                            <th> {{ $i  }} </th>
-                                            <td>
-                                                {{ $category->name }}
-                                                <button class="btn btn-danger btn-sm float-right" onClick="handleDelete({{ $category->id }})">Delete</button>
-                                                <a href="{{route('categories.edit',$category->id)}}" class="btn btn-primary btn-sm mx-2 float-right">Edit</a> 
-                                            </td>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th></th>
                                         </tr>
-                                        <?php $i++ ?>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        {{-- TRY TO MAKE COL ACTIONS AT THE END OF THE TABLE --}}
+                                        <?php $i = 1 ?>
+                                        @foreach ($categories as $category)
+                                            <tr>
+                                                <th> {{ $i  }} </th>
+                                                <td>
+                                                    {{ $category->name }}
+                                                </td>
+                                                <td class="white-space: nowrap">
+                                                    <button class="btn btn-danger btn-sm float-right" onClick="handleDelete({{ $category->id }})">Delete</button>
+                                                    <a href="{{route('categories.edit',$category->id)}}" class="btn btn-primary btn-sm mx-2 float-right">Edit</a> 
+                                                </td>
+                                            </tr>
+                                            <?php $i++ ?>
+                                        @endforeach
 
-                                </tbody>
-                        </table>
+                                    </tbody>
+                            </table>
+                        @endif
                     </div>
             </div>
             {{-- use {{ route ('routename')}} instead of static one so helpful if u wanna change any path/name  --}}

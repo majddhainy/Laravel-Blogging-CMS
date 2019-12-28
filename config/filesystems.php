@@ -13,6 +13,8 @@ return [
     |
     */
 
+    /// by default local (secure) u have to make them public from the .env 
+
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
     /*
