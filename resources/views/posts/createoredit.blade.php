@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
-{{-- Note here we can use the same file for editing / creating categories to reduce number of files --}}
+{{-- Note here we can use the same file for editing / creating Posts to reduce number of files --}}
+
+{{-- U can use trix editor nice for inserting content but u have to style/resize it in a good way
+code : 
+<input type="hidden"  id="content"  name="content" type="text">
+<trix-editor  class="trix-content" width="20" placeholder="Content" input="content"></trix-editor>
+
+and include css & js by typing [] cdn trix editor ] in google --}}
 
 @section('content')
     <div class="container">
@@ -45,10 +52,15 @@
                             </div>
                             <div class="form-group">
                                 {{-- put value if editing empty if creating --}}
-                                <input name="published_at" placeholder="Published At" type="text" class="form-control" value="{{ isset($post) ? $post->published_at : ''}}">
+                                <input id="published_at" name="published_at" value="{{ (isset($post) && $post->published_at != null) ? $post->published_at : 'Published At'}}"  type="text" class="form-control" >
                             </div>
                             <div class="form-group">
-                                <label for="image">Post Image</label>
+                                <label for="image">Image</label>
+                                @if (isset($post))
+                                    @if(isset($post->image_path))
+                                        <img class="mx-2 my-2" width="150" height="150" src="{{ asset( "storage/" . $post->image_path) }}" />
+                                    @endif
+                                @endif
                                 <input id="image"  name="image"  type="file" class="form-control">
                             </div>
                             <button type="submit"  class="btn btn-success float-right"> {{ isset($post) ? 'Update Post' : 'Add Post'}} </button>
@@ -61,4 +73,17 @@
     </div>
 @endsection
 
+{{-- linking css and javascript for flatpickr --}}
+@section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endsection
 
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>   
+    <script>
+        // calling the picker and allowing time 
+        flatpickr('#published_at',{
+            enableTime : true
+        });
+    </script>
+@endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\posts\CreatePostRequest;
+use App\Http\Requests\posts\UpdatePostRequest;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -51,6 +52,7 @@ class PostsController extends Controller
         $post->title = $data['title'];
         $post->description = $data['description'];
         $post->content = $data['content'];
+        $post->published_at = $data['published_at'];
         // $post->published_at = $data['published_at'];
         $post->image_path = $image_path;
         $post->save();
@@ -90,9 +92,30 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        //
+
+        // Also here no Need to validate because it automatic will call the rules() fn//
+        $data = $request->all();
+        Post::where('id', $id)
+        ->update(['title' => $data['title'],
+                  'description' => $data['description'], 
+                  'content' => $data['content'], 
+                  'published_at' => $data['published_at'],
+        ]);
+
+        if(isset($data['image'])){
+            $post = Post::find($id);
+            // easily here call ur function
+            $post->deleteimage();
+            $new_path = $data['image']->store('posts');
+            Post::where('id', $id)->update(['image_path' => $new_path ]);
+        }
+
+        session()->flash('success','Post updated successfuly ');
+        // also here in redirect u can just use route name better !
+
+        return redirect(route('posts.index'));
     }
 
     /**
@@ -123,7 +146,7 @@ class PostsController extends Controller
 
         if($post->trashed()){
             // deleting the image !
-            Storage::delete($post->image_path);
+            $post->deleteimage();
             // permanent delete
             $post->forceDelete();
             session()->flash('success','Post Deleted Successfuly');
