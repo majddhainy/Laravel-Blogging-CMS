@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\posts\CreatePostRequest;
 use App\Http\Requests\posts\UpdatePostRequest;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        // middleware applied on create post page and storing a post (post request ! )
+        $this->middleware('verifycategoriescount')->only(['create','store']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +35,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.createoredit');
+        $categories = Category::all();
+        return view('posts.createoredit')->with('categories',$categories);
     }
 
     /**
@@ -54,6 +62,8 @@ class PostsController extends Controller
         $post->content = $data['content'];
         $post->published_at = $data['published_at'];
         // $post->published_at = $data['published_at'];
+        // category since its the name in the select
+        $post->category_id = $data['category'];
         $post->image_path = $image_path;
         $post->save();
         //flash a message
@@ -80,9 +90,10 @@ class PostsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
+    {   
+        $categories = Category::all();
         $post = Post::find($id);
-        return view('posts.createoredit')->with('post',$post);
+        return view('posts.createoredit')->with('post',$post)->with('categories',$categories);
     }
 
     /**
@@ -102,6 +113,7 @@ class PostsController extends Controller
                   'description' => $data['description'], 
                   'content' => $data['content'], 
                   'published_at' => $data['published_at'],
+                  'category_id' => $data['category'],
         ]);
 
         if(isset($data['image'])){

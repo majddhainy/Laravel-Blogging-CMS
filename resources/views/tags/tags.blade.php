@@ -15,11 +15,11 @@
                 </div>
             @endif
             <div class="card">
-                <div class="card-header">Categories</div>
+                <div class="card-header">Tags</div>
 
                     <div class="card-body">
-                        @if($categories->count() == 0)
-                            <h3 class="text text-center"> No Categories Yet </h3>
+                        @if($tags->count() == 0)
+                            <h3 class="text text-center"> No Tags Yet </h3>
                             @else
                             <table class="table table-hover">
                                     <thead>
@@ -33,18 +33,18 @@
                                     <tbody>
                                         {{-- TRY TO MAKE COL ACTIONS AT THE END OF THE TABLE --}}
                                         <?php $i = 1 ?>
-                                        @foreach ($categories as $category)
+                                        @foreach ($tags as $tag)
                                             <tr>
                                                 <th> {{ $i  }} </th>
                                                 <td>
-                                                    {{ $category->name }}
+                                                    {{ $tag->name }}
                                                 </td>
-                                                {{-- since post method is defined in category model and reurns a relation ship VERY IMPORTANT --}}
+                                                {{-- since post method is defined in tag model and reurns a relation ship VERY IMPORTANT --}}
                                                 {{-- Note Call name only not function with () because if u need to do query use () --}}
-                                                <td> {{ $category->posts->count() }} </td>
+                                                <td> count here </td>
                                                 <td class="white-space: nowrap">
-                                                    <button class="btn btn-danger btn-sm float-right" onClick="handleDelete({{ $category->id }})">Delete</button>
-                                                    <a href="{{route('categories.edit',$category->id)}}" class="btn btn-primary btn-sm mx-2 float-right">Edit</a> 
+                                                    <button class="btn btn-danger btn-sm float-right" onClick="handleDelete({{ $tag->id }})">Delete</button>
+                                                    <a href="{{route('tags.edit',$tag->id)}}" class="btn btn-primary btn-sm mx-2 float-right">Edit</a> 
                                                 </td>
                                             </tr>
                                             <?php $i++ ?>
@@ -58,7 +58,7 @@
             {{-- use {{ route ('routename')}} instead of static one so helpful if u wanna change any path/name  --}}
             {{-- u can set a name using ->name('create'); in (routes) as the first one for home check it --}}
             {{-- or bring the name using php artisan route:list  --}}
-            <a href="{{ route('categories.create') }}" class="btn btn-success float-right my-2">Add Category</a>
+            <a href="{{ route('tags.create') }}" class="btn btn-success float-right my-2">Add tag</a>
             
             {{-- <!-- Modal --> --}}
             <form id="deletecatform" action="" method="post">
@@ -68,13 +68,13 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModal">Delete Category</h5>
+                                <h5 class="modal-title" id="deleteModal">Delete tag</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                    Are you sure you want to delete this category ? 
+                                    Are you sure you want to delete this tag ? 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
@@ -101,7 +101,7 @@
         // the only way is to handle it in the function and from the function set it in the action 
         var form = document.getElementById('deletecatform');
         //console.log(form);
-        form.action = '/categories/' + id;
+        form.action = '/tags/' + id;
         // Display thi Modal
         $('#deleteModal').modal('show');
 

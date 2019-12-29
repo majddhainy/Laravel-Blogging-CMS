@@ -85,6 +85,14 @@
                                 <li class="list-group-item">
                                     <a href="/categories">Categories</a>
                                 </li>
+                                <li class="list-group-item">
+                                    <a href="/tags">Tags</a>
+                                </li>
+                                @if (auth()->user()->isAdmin())
+                                <li class="list-group-item">
+                                    <a href="/users">Users</a>
+                                </li>
+                                @endif
                             </ul>
                             <ul class="list-group my-5">
                                 <li class="list-group-item">

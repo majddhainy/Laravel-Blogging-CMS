@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\posts;
+namespace App\Http\Requests\tags;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class CreateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,9 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules()
     {
+        // here inside rules we return the array of SERVER SIDE VALIDATION ! 
         return [
-            
-            //when u say unique specify the table
-            'title' => 'required',
-            'description' => 'required',
-            'content' => 'required',
-            'published_at' => 'required|date',
-            'image' => 'image',
-            'category' => 'required'
+            'name' => 'required|unique:categories'
         ];
     }
 }

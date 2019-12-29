@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            // adding role u can use enum to specify only these types ... 
+            $table->string('role')->default('writer');
+            $table->text('about')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

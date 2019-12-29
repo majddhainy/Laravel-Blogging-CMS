@@ -18,6 +18,10 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image_path');
+            // Here we have category id as foreign key (since each post belong to one category)
+            // note this is conventiol with laravel autmoatic when u say category [name of model] in small letters and _id 
+            // it auto detects that this references to id in categories table 
+            $table->integer('category_id');
             $table->text('content');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

@@ -10,41 +10,45 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">Posts</div>
+                    <div class="card-header">Users</div>
 
                         <div class="card-body">
-                             @if($posts->count() == 0)
-                                <h3 class="text text-center"> No Posts Yet </h3>
+                             @if($users->count() == 0)
+                                <h3 class="text text-center"> No Users Yet </h3>
                                 @else
                                 <table class="table table-hover">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Category</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Email</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {{-- TRY TO MAKE COL ACTIONS AT THE END OF THE TABLE --}}
                                             <?php $i = 1 ?>
-                                            @foreach ($posts as $post)
+                                            @foreach ($users as $user)
                                                 <tr>
                                                     <th> {{ $i  }} </th>
-                                                    <td> <img src="{{ asset( "storage/" . $post->image_path) }}" width="130" height="70"/> </td> 
+                                                    <td> Image </td>
+                                                    {{-- <td> <img src="{{ asset( "storage/" . $user->image_path) }}" width="130" height="70"/> </td>  --}}
                                                     <td>
-                                                        {{ $post->title }}
+                                                        {{ $user->name }}
                                                     </td>
-                                                <td> <a href="{{route('categories.edit' , $post->category_id)}}">{{$post->category->name}} </a> </td>
+                                                    <td> {{$user->email }} </td>
                                                     {{-- in order to keep buttons in the same line use white-space: nowrap --}}
                                                     <td style='white-space: nowrap'>
-                                                    <form method="post" action="{{ route('posts.destroy' , $post->id) }}" >
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary btn-sm mx-2 ">Edit</a>
-                                                        <button type="submit" class="btn btn-danger btn-sm" >Trash</button>
-                                                    </form>
+                                                            <form method="post" action="{{ route('users.changerole' , $user->id) }}" >
+                                                                @method('PUT')
+                                                                @csrf
+                                                                @if($user->role == 'writer')
+                                                                    <button type="submit" class="btn btn-success btn-sm" >Make Admin</button>
+                                                                    @else 
+                                                                    <button type="submit" class="btn btn-danger btn-sm" >Remove Admin</button>
+                                                                @endif
+                                                            </form>  
                                                     </td>
                                                 </tr>
                                                 <?php $i++ ?>
@@ -58,7 +62,7 @@
                 {{-- use {{ route ('routename')}} instead of static one so helpful if u wanna change any path/name  --}}
                 {{-- u can set a name using ->name('create'); in (routes) as the first one for home check it --}}
                 {{-- or bring the name using php artisan route:list  --}}
-                <a href="{{ route('posts.create') }}" class="btn btn-success float-right my-2">Add Post</a>
+                {{-- <a href="{{ route('users.create') }}" class="btn btn-success float-right my-2">Add user</a> --}}
                 
             </div>
         </div>

@@ -55,6 +55,16 @@ and include css & js by typing [] cdn trix editor ] in google --}}
                                 <input id="published_at" name="published_at" value="{{ (isset($post) && $post->published_at != null) ? $post->published_at : 'Published At'}}"  type="text" class="form-control" >
                             </div>
                             <div class="form-group">
+                                    <select class="form-control" name="category">
+                                        @foreach ($categories as $category)
+                                            {{-- So here we are grabbing all categories that are sent by controller
+                                            and we will check if there is a post also sent so we are editing not creating
+                                            here we wanna make sure if the cat id is sam as post_cat_id so make it selected --}}
+                                            <option @if (isset($post))@if($category->id == $post->category_id) selected="selected" @endif @endif  value="{{ $category->id }}"> {{ $category->name }} </option>
+                                        @endforeach
+                                    </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="image">Image</label>
                                 @if (isset($post))
                                     @if(isset($post->image_path))
